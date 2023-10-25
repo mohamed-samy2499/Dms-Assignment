@@ -25,6 +25,27 @@ namespace DmsAssignment.Infrastructure.Database
         {
             base.OnModelCreating(builder);
 
+            #region SoftDelete Query Filter
+            //A query filter applied to any query to exclude the Soft Deleted Entities
+            builder.Entity<Device>()
+                .HasQueryFilter(x => !x.IsDeleted);
+
+            builder.Entity<DeviceCategory>()
+                .HasQueryFilter(x => !x.IsDeleted);
+
+            builder.Entity<Property>()
+                .HasQueryFilter(x => !x.IsDeleted);
+
+            builder.Entity<PropertyType>()
+                .HasQueryFilter(x => !x.IsDeleted);
+
+            builder.Entity<DeviceCategoryProperty>()
+                .HasQueryFilter(x => !x.IsDeleted);
+
+            builder.Entity<DevicePropertyValue>()
+                .HasQueryFilter(x => !x.IsDeleted);
+            #endregion
+            
             #region Data Seeding
 
             builder.Entity<DeviceCategory>(builder =>
@@ -88,7 +109,7 @@ namespace DmsAssignment.Infrastructure.Database
             builder.Entity<Device>(builder =>
             {
                 builder.HasData(new Device { Id = 1, Name = "HP Desktop 1190", 
-                    SerialNo = "334cdh32-1", DeviceCategoryId = 2});
+                    SerialNo = "334cdh32-1", Memo = "" , DeviceCategoryId = 2});
             });
 
             builder.Entity<DevicePropertyValue>(builder =>
@@ -101,45 +122,7 @@ namespace DmsAssignment.Infrastructure.Database
             });
             #endregion
 
-            //// Review table
-            //builder.Entity<Review>(builder =>
-            //{
-            //    builder.HasOne(r => r.User)
-            //        .WithMany(u => u.Reviews)
-            //        .HasForeignKey(r => r.UserId)
-            //        .OnDelete(DeleteBehavior.NoAction);
-
-            //    // builder
-            //    // .HasIndex(r => new { r.UserId, r.MovieId })
-            //    // .IsUnique();
-            //});
-
-            //// Rate table
-            //builder.Entity<Rate>(builder =>
-            //{
-            //    builder.HasOne(r => r.User)
-            //        .WithMany(u => u.Rates)
-            //    .HasForeignKey(r => r.UserId)
-            //    .OnDelete(DeleteBehavior.NoAction);
-
-            //    builder
-            //    .HasIndex(r => new { r.UserId, r.MovieId })
-            //    .IsUnique();
-            //});
-
-            //// Like table
-            //builder.Entity<Like>(builder =>
-            //{
-            //    builder.HasOne(r => r.User)
-            //        .WithMany(u => u.Likes)
-            //    .HasForeignKey(r => r.UserId)
-            //    .OnDelete(DeleteBehavior.NoAction);
-
-            //    builder
-            //    .HasIndex(r => new { r.UserId, r.MovieId })
-            //    .IsUnique();
-            //});
-
+            #region Db Relations
             //DeviceCategoryProperty Table the Many to Many relation
             //between the DeviceCategory and the Property tables
             builder.Entity<DeviceCategoryProperty>(builder =>
@@ -183,7 +166,7 @@ namespace DmsAssignment.Infrastructure.Database
                 .WithMany(u => u.DevicePropertyValues)
                 .HasForeignKey(r => r.PropertyId);
             });
-
+            #endregion
         }
     }
 }

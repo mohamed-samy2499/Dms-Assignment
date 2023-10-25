@@ -1,7 +1,34 @@
+using DmsAssignment.Infrastructure.Database;
+using JobResearchSystem.Domain.Entities.Extend;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+
+//Adding the DbContext 
+builder.Services.AddDbContext<AppDbContext>(opt =>
+                opt.UseSqlServer(builder.Configuration.GetConnectionString("Default")));
+
+// adding identity services like user manager, role manager etc.
+builder.Services
+    .AddIdentity<ApplicationUser, IdentityRole>(options =>
+    {
+        // configure identity services options
+        options.Password.RequiredLength = 8;
+        options.Password.RequireDigit = false;
+        options.Password.RequireLowercase = false;
+        options.Password.RequireUppercase = false;
+        options.Password.RequireNonAlphanumeric = false;
+
+        options.SignIn.RequireConfirmedAccount = false;
+        options.SignIn.RequireConfirmedEmail = false;
+        options.SignIn.RequireConfirmedPhoneNumber = false;
+    })
+    .AddEntityFrameworkStores<AppDbContext>();
+
 
 var app = builder.Build();
 

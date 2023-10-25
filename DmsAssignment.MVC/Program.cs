@@ -2,6 +2,7 @@ using DmsAssignment.Infrastructure.Database;
 using DmsAssignment.Domain.Entities.Extend;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using DmsAssignment.Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -28,7 +29,8 @@ builder.Services
         options.SignIn.RequireConfirmedPhoneNumber = false;
     })
     .AddEntityFrameworkStores<AppDbContext>();
-
+builder.Services
+    .AddInfrastructureDependencies();
 
 var app = builder.Build();
 

@@ -5,11 +5,11 @@ using DmsAssignment.Infrastructure.Generic;
 
 namespace DmsAssignment.Infrastructure.Repositories.DevicePropertyValueRepositories
 {
-    public class CategoryRepository : GenericRepository<DevicePropertyValue>, IDevicePropertyValueRepository
+    public class DevicePropertyValueRepository : GenericRepository<DevicePropertyValue>, IDevicePropertyValueRepository
     {
         #region CTOR
         private DbSet<DevicePropertyValue> _devicePropertyValue;
-        public CategoryRepository(AppDbContext _appDbContext) : base(_appDbContext)
+        public DevicePropertyValueRepository(AppDbContext _appDbContext) : base(_appDbContext)
         {
             _devicePropertyValue = _appDbContext.Set<DevicePropertyValue>();
         }

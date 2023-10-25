@@ -3,6 +3,7 @@ using DmsAssignment.Domain.Entities.Extend;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using DmsAssignment.Infrastructure;
+using DmsAssignment.Application;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -30,7 +31,8 @@ builder.Services
     })
     .AddEntityFrameworkStores<AppDbContext>();
 builder.Services
-    .AddInfrastructureDependencies();
+    .AddInfrastructureDependencies()
+    .AddApplicationDependeicies();
 
 var app = builder.Build();
 

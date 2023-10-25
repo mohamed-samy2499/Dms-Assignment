@@ -10,6 +10,8 @@ namespace DmsAssignment.Domain.Entities
         public string Name { get; set; } = null!;
 
         /*----- Relations -----*/
-        public IEnumerable<Property> Properties { get; set; } = null!;
+        public IEnumerable<DeviceCategoryProperty> DeviceCategoryProperties { get; set; } = null!;
+        public IEnumerable<Device> Devices { get; set; } = null!;
+
     }
 }

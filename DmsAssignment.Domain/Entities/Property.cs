@@ -9,12 +9,13 @@ namespace DmsAssignment.Domain.Entities
         public string Name { get; set; } = null!;
 
         /*----- Relations -----*/
-        public int DeviceCategoryId { get; set; }
-        public int DevicePropertyValueId { get; set; }
+        public int PropertyTypeId { get; set; }
 
-        public DeviceCategory? DeviceCategory { get; set; }
+        public PropertyType? PropertyType { get; set; }
 
-        public IEnumerable<DevicePropertyValue> DevicePropertyValue { get; set; } = null!;
+        public IEnumerable<DeviceCategoryProperty> DeviceCategoryProperties { get; set; } = null!;
+
+        public IEnumerable<DevicePropertyValue> DevicePropertyValues { get; set; } = null!;
 
     }
 }

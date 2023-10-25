@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace DmsAssignment.Domain.Entities
 {
-    [Table("DeviceProperty")]
+    [Table("DevicePropertyValue")]
     public class DevicePropertyValue: BaseEntity
     {
         public string Value { get; set; } = null!;

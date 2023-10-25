@@ -8,7 +8,9 @@ namespace DmsAssignment.Domain.Entities
     public class Device : BaseEntity
     {
         public string Name { get; set; } = null!;
-        public DateTime AcquisitionDate { get; set; }
+        public string SerialNo { get; set; } = null!;
+
+        public DateTime AcquisitionDate { get; set; } = DateTime.Now;
         public string Memo { get; set; } = null!;
 
         /*----- Relations -----*/

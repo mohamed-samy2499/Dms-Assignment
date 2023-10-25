@@ -69,7 +69,6 @@ namespace DmsAssignment.Infrastructure.Generic
             }
 
             var entity = await query.FirstOrDefaultAsync(x => x.Id == id);
-
             return entity;
         }
 

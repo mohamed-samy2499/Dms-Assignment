@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using DmsAssignment.Domain.Entities;
-using JobResearchSystem.Domain.Entities.Extend;
+using DmsAssignment.Domain.Entities.Extend;
 
 namespace DmsAssignment.Infrastructure.Database
 {

@@ -1,5 +1,5 @@
 using DmsAssignment.Infrastructure.Database;
-using JobResearchSystem.Domain.Entities.Extend;
+using DmsAssignment.Domain.Entities.Extend;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 

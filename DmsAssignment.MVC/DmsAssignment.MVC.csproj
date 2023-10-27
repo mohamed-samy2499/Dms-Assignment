@@ -19,4 +19,8 @@
     <ProjectReference Include="..\DmsAssignment.Infrastructure\DmsAssignment.Infrastructure.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\files\" />
+  </ItemGroup>
+
 </Project>

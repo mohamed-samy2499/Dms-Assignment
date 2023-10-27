@@ -14,6 +14,7 @@ namespace DmsAssignment.MVC.Controllers
 {
     public class DeviceController : Controller
     {
+        #region Ctor
         private readonly ILogger<HomeController> _logger;
         private readonly IMediator _mediator;
         private IMapper _mapper;
@@ -23,12 +24,17 @@ namespace DmsAssignment.MVC.Controllers
             _mediator = mediator;
             _mapper = mapper;
         }
+        #endregion
 
+        #region Index Action
         public async Task<IActionResult> Index()
         {
             var devices = await _mediator.Send(new GetDeviceListQuery());
             return View(devices.Data);
         }
+        #endregion
+
+        #region Details Action
         public async Task<IActionResult> Details(int id)
         {
             var getDeviceByIdQuery = new GetDeviceByIdQuery()
@@ -38,6 +44,9 @@ namespace DmsAssignment.MVC.Controllers
             var devices = await _mediator.Send(getDeviceByIdQuery);
             return View(devices.Data);
         }
+        #endregion
+
+        #region Create Action
         public async Task<IActionResult> DeviceCategory()
         {
             var result = await _mediator.Send(new GetDeviceCategoryListQuery());
@@ -73,6 +82,9 @@ namespace DmsAssignment.MVC.Controllers
             var result  = await _mediator.Send(command);
             return RedirectToAction(nameof(Index));
         }
+        #endregion
+
+        #region Edit Action
         [HttpGet]
         public async Task<IActionResult> Edit(int id)
         {
@@ -110,6 +122,7 @@ namespace DmsAssignment.MVC.Controllers
             }
             return RedirectToAction(nameof(Index));
         }
+        
         [HttpPost]
 
         public async Task<IActionResult> Edit(UpdateDeviceCommand command)
@@ -119,10 +132,8 @@ namespace DmsAssignment.MVC.Controllers
                 return RedirectToAction(nameof(Index));
             return View(result);
         }
-        public IActionResult Privacy()
-        {
-            return View();
-        }
+        #endregion
+      
         #region Delete
         public async Task<IActionResult> Delete(int id)
         {
@@ -153,10 +164,6 @@ namespace DmsAssignment.MVC.Controllers
             }
         }
         #endregion
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
-        {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
-        }
+
     }
 }

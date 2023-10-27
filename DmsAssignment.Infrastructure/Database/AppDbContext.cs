@@ -12,8 +12,6 @@ namespace DmsAssignment.Infrastructure.Database
         public DbSet<DeviceCategory> DeviceCategories { get; set; } = null!;
         public DbSet<DevicePropertyValue> DevicePropertyValues { get; set; } = null!;
         public DbSet<Property> Properties { get; set; } = null!;
-
-        public DbSet<PropertyType> PropertyTypes { get; set; } = null!;
         public DbSet<DeviceCategoryProperty> DeviceCategoryProperties { get; set; } = null!;
 
         #endregion
@@ -36,9 +34,6 @@ namespace DmsAssignment.Infrastructure.Database
             builder.Entity<Property>()
                 .HasQueryFilter(x => !x.IsDeleted);
 
-            builder.Entity<PropertyType>()
-                .HasQueryFilter(x => !x.IsDeleted);
-
             builder.Entity<DeviceCategoryProperty>()
                 .HasQueryFilter(x => !x.IsDeleted);
 
@@ -56,28 +51,22 @@ namespace DmsAssignment.Infrastructure.Database
 
             });
 
-            builder.Entity<PropertyType>(builder =>
-            {
-                builder.HasData(new PropertyType { Id = 1, Name = "String" });
-                builder.HasData(new PropertyType { Id = 2, Name = "Boolean" });
-            });
-
             builder.Entity<Property>(builder =>
             {
-                builder.HasData(new Property { Id = 1, Name = "HD", PropertyTypeId = 1});
-                builder.HasData(new Property { Id = 2, Name = "Processor", PropertyTypeId = 1 });
-                builder.HasData(new Property { Id = 3, Name = "Dimensions", PropertyTypeId = 1 });
-                builder.HasData(new Property { Id = 4, Name = "MAC Address", PropertyTypeId = 1 });
-                builder.HasData(new Property { Id = 5, Name = "IP Address", PropertyTypeId = 1 });
-                builder.HasData(new Property { Id = 6, Name = "Allow USB", PropertyTypeId = 2 });
-                builder.HasData(new Property { Id = 7, Name = "Current User", PropertyTypeId = 1 });
-                builder.HasData(new Property { Id = 8, Name = "Network Speed", PropertyTypeId = 1 });
-                builder.HasData(new Property { Id = 9, Name = "Operating System", PropertyTypeId = 1 });
-                builder.HasData(new Property { Id = 10, Name = "ports", PropertyTypeId = 1 });
-                builder.HasData(new Property { Id = 11, Name = "Is Color", PropertyTypeId = 2 });
-                builder.HasData(new Property { Id = 12, Name = "Brand", PropertyTypeId = 1 });
-                builder.HasData(new Property { Id = 13, Name = "Display", PropertyTypeId = 1 });
-                builder.HasData(new Property { Id = 14, Name = "Ram", PropertyTypeId = 1 });
+                builder.HasData(new Property { Id = 1, Name = "HD"});
+                builder.HasData(new Property { Id = 2, Name = "Processor" });
+                builder.HasData(new Property { Id = 3, Name = "Dimensions" });
+                builder.HasData(new Property { Id = 4, Name = "MAC Address" });
+                builder.HasData(new Property { Id = 5, Name = "IP Address" });
+                builder.HasData(new Property { Id = 6, Name = "Allow USB" });
+                builder.HasData(new Property { Id = 7, Name = "Current User" });
+                builder.HasData(new Property { Id = 8, Name = "Network Speed" });
+                builder.HasData(new Property { Id = 9, Name = "Operating System" });
+                builder.HasData(new Property { Id = 10, Name = "ports" });
+                builder.HasData(new Property { Id = 11, Name = "Is Color" });
+                builder.HasData(new Property { Id = 12, Name = "Brand" });
+                builder.HasData(new Property { Id = 13, Name = "Display" });
+                builder.HasData(new Property { Id = 14, Name = "Ram" });
 
 
             });

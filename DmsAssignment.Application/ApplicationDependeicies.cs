@@ -5,6 +5,9 @@ using DmsAssignment.Application.Behaviors;
 using DmsAssignment.Application.IServices;
 using DmsAssignment.Application.Services;
 using System.Reflection;
+using AutoMapper;
+using DmsAssignment.Application.Mapping.Devices;
+using DmsAssignment.Domain.Entities;
 
 namespace DmsAssignment.Application
 {
@@ -18,9 +21,8 @@ namespace DmsAssignment.Application
             services.AddTransient<IDeviceCategoryPropertyService, DeviceCategoryPropertyService>();
             services.AddTransient<IDevicePropertyValueService, DevicePropertyValueService>();
             services.AddTransient<IPropertyService, PropertyService>();
-            services.AddTransient<IPropertyTypeService, PropertyTypeService>();
 
-
+            services.AddSingleton<IValueConverter<Dictionary<string, string>, IEnumerable<DevicePropertyValue>>, DevicePropertyValueValueConverter>();
             services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(Assembly.GetExecutingAssembly()));
 
             services.AddAutoMapper(Assembly.GetExecutingAssembly());

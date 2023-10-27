@@ -9,9 +9,6 @@ namespace DmsAssignment.Domain.Entities
         public string Name { get; set; } = null!;
 
         /*----- Relations -----*/
-        public int PropertyTypeId { get; set; }
-
-        public PropertyType? PropertyType { get; set; }
 
         public IEnumerable<DeviceCategoryProperty> DeviceCategoryProperties { get; set; } = null!;
 

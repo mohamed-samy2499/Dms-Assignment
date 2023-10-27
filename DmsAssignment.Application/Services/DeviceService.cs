@@ -1,6 +1,7 @@
 ﻿using DmsAssignment.Domain.Entities;
 using DmsAssignment.Application.IServices;
 using DmsAssignment.Infrastructure.Repositories.DeviceRepositories;
+using System.Linq.Expressions;
 
 namespace DmsAssignment.Application.Services
 {
@@ -26,17 +27,25 @@ namespace DmsAssignment.Application.Services
 
         public async Task<IEnumerable<Device>> GetAllDevicesAsync()
         {
-            return await _deviceRepository.GetAllAsync();
+            var includes = new Expression<Func<Device, object>>[] {
+                device => device.DeviceCategory
+            };
+
+            return await _deviceRepository.GetAllAsync(includes);
         }
 
         public async Task<Device> GetDeviceByIdAsync(int id)
         {
-            return await _deviceRepository.GetByIdAsync(id);
+            var includes = new Expression<Func<Device, object>>[] {
+                device => device.DeviceCategory , device => device.DevicePropertyValues
+            };
+            return await _deviceRepository.GetByIdAsync(id,includes);
         }
 
         public async Task<Device> UpdateDeviceAsync(Device device)
         {
             return await _deviceRepository.UpdateAsync(device);
         }
+      
     }
 }

@@ -9,11 +9,18 @@ namespace DmsAssignment.Infrastructure.Repositories.DeviceCategoryRepositories
     {
         #region CTOR
         private DbSet<DeviceCategory> _deviceCategory;
+
         public DeviceCategoryRepository(AppDbContext _appDbContext) : base(_appDbContext)
         {
             _deviceCategory = _appDbContext.Set<DeviceCategory>();
         }
         #endregion
-
+        public async Task<DeviceCategory> GetDeviceCategoryPropertiesByIdAsync(int deviceCategoryId)
+        {
+            return await _deviceCategory
+                .Include(dc => dc.DeviceCategoryProperties)
+                .ThenInclude(dcp => dcp.Property) // Include the Property entity
+                .FirstOrDefaultAsync(dc => dc.Id == deviceCategoryId);
+        }
     }
 }

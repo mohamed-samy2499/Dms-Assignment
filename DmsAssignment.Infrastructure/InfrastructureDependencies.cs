@@ -19,7 +19,6 @@ namespace DmsAssignment.Infrastructure
             services.AddTransient<IDeviceCategoryPropertyRepository, DeviceCategoryPropertyRepository>();
             services.AddTransient<IDevicePropertyValueRepository, DevicePropertyValueRepository>();
             services.AddTransient<IPropertyRepository, PropertyRepository>();
-            services.AddTransient<IPropertyTypeRepository, PropertyTypeRepository>();
 
             return services;
         }

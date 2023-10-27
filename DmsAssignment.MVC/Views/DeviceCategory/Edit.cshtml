@@ -1,0 +1,39 @@
+﻿@model List<DeviceCategoryPropertyDto>
+@{
+    ViewData["Title"] = "Details";
+    var CategoryName = ViewBag.CatName;
+    var id = ViewBag.CatId;
+}
+
+<h1>Edit Device Category Properties</h1>
+<br />
+<br />
+<form class="container" asp-action="Edit" >
+    <div class="row">
+        <div class=" col-md-6 text-center">
+            <label  class="form-control-label"> Category Name</label>
+            <input value="@CategoryName" class="form-control text-center" readonly />
+        </div>
+    </div>
+    <div class="row">
+
+        @for (int i = 0; i < Model.Count(); i++)
+        {
+            <div>
+                <input type="checkbox" asp-for="@Model[i].IsSelected" class="form-control filled-in" />
+                <label asp-for="@Model[i].IsSelected" class="form-control-label">@Model[i].PropertyName</label>
+                <input asp-for="@Model[i].PropertyId" hidden />
+                <input asp-for="@Model[i].PropertyName" hidden />
+            </div>
+        }
+    </div>
+    <br />
+    <br />
+
+    <div class="row">
+        <input type="submit" class="btn btn-primary" value="Update" asp-route-id ="@id"/>
+        <a class="btn btn-light" asp-action="Index" asp-controller="DeviceCategory">Back To Devices Categories</a>
+    </div>
+</form>
+
+

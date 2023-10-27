@@ -9,12 +9,15 @@ using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 using DmsAssignment.Infrastructure.Repositories.DeviceRepositories;
 using DmsAssignment.Infrastructure.Repositories.DevicePropertyValueRepositories;
 using DmsAssignment.Infrastructure.Repositories.DeviceCategoryPropertyRepositories;
+using System.Runtime.InteropServices;
 
-namespace MovieSystem.Application.Feature.Likes.Commands.Handlers
+namespace DmsAssignment.Application.Feature.Likes.Commands.Handlers
 {
     public class DeviceCategoryCommandHandler : ResponseHandler, IRequestHandler<AddDeviceCategoryCommand, Response<string>>,
-                                      IRequestHandler<UpdateDeviceCategoryCommand, Response<GetDeviceCategoryResponse>>,
-                                      IRequestHandler<DeleteDeviceCategoryCommand, Response<string>>
+                                                                //IRequestHandler<EditDeviceCategoryPropertiesCommand, Response<GetDeviceCategoryResponse>>,
+
+                                                                IRequestHandler<UpdateDeviceCategoryCommand, Response<GetDeviceCategoryResponse>>,
+                                                                IRequestHandler<DeleteDeviceCategoryCommand, Response<string>>
     {
         #region CTOR
         private readonly IDeviceCategoryPropertyRepository _deviceCategoryPropertyRepository;
@@ -32,69 +35,60 @@ namespace MovieSystem.Application.Feature.Likes.Commands.Handlers
         public async Task<Response<string>> Handle(AddDeviceCategoryCommand request, CancellationToken cancellationToken)
         {
             var deviceCategory = _mapper.Map<DeviceCategory>(request);
-            // Add properties to the device category
-            foreach (var propertyDto in request.Properties)
-            {
-                var property = _mapper.Map<Property>(propertyDto);
-                var deviceCategoryProperty = new DeviceCategoryProperty()
-                {
-                    PropertyId = property.Id,
-                    DeviceCategoryId = deviceCategory.Id
-                };
-                await _deviceCategoryPropertyRepository.CreateAsync(deviceCategoryProperty);
-            }
 
             var result = await _deviceCategoryService.AddDeviceCategoryAsync(deviceCategory);
             if (result != "success") { return BadRequest<string>(""); }
             else { return Created(""); }
 
         }
+   
+
         public async Task<Response<GetDeviceCategoryResponse>> Handle(UpdateDeviceCategoryCommand request, CancellationToken cancellationToken)
         {
-            // Retrieve the existing device by its ID.
-            var existingDeviceCategory = await _deviceCategoryService.GetDeviceCategoryByIdAsync(request.Id);
-
-            if (existingDeviceCategory == null)
+            var deviceCategory = await _deviceCategoryService.GetDeviceCategoryByIdAsync(request.Id);
+            var mappedDeviceCategory = _mapper.Map<GetDeviceCategoryResponse>(deviceCategory); 
+            var existingProperties = mappedDeviceCategory.Properties;
+            // Add properties to the device category
+            foreach (var propertyDto in request.Properties)
             {
-                // Handle the case where the device doesn't exist.
-                return BadRequest<GetDeviceCategoryResponse>("Device Category not found");
-            }
-
-            // Update the device properties with values from the command.
-            existingDeviceCategory.Name = request.Name;
-
-            // Update other properties as needed.
-            // Update the device properties and values.
-            foreach (var updatedProperty in request.Properties)
-            {
-                // Check if the device already has a property value for the updated property.
-                var existingPropertyValue = existingDeviceCategory.DeviceCategoryProperties.FirstOrDefault(dpv => dpv.PropertyId == updatedProperty.PropertyId);
-
-                if (existingPropertyValue != null)
+                var itemToFind = new DeviceCategoryPropertyDto() { 
+                PropertyId = propertyDto.PropertyId,
+                PropertyName = propertyDto.PropertyName
+                };
+                itemToFind.IsSelected = false;
+                bool alreadyExists = existingProperties.Contains(itemToFind, new DeviceCategoryPropertyDtoEqualityComparer());
+                if (propertyDto.IsSelected && !alreadyExists)
                 {
-                    // Update the value of the existing property value.
-                    var mappedProperty = _mapper.Map<Property>(updatedProperty);
-                    existingPropertyValue.Property = mappedProperty;
-                }
-                else
-                {
-                    // Create a new property value if it doesn't exist.
-                    var newDeviceCategoryProperty = new DeviceCategoryProperty
+                    var deviceCategoryProperty = _deviceCategoryPropertyRepository
+                        .FindByCompositeKey(request.Id, propertyDto.PropertyId).Result;
+                    if(deviceCategoryProperty != null)
                     {
-                        DeviceCategoryId = existingDeviceCategory.Id,
-                        PropertyId = updatedProperty.PropertyId,
-                    };
+                        deviceCategoryProperty.IsDeleted = false;
+                        var updateResult =  await _deviceCategoryPropertyRepository.UpdateAsync(deviceCategoryProperty);
+                        if (updateResult == null) { return BadRequest<GetDeviceCategoryResponse>(""); }
+                    }
+                    else
+                    {
 
-                    // Add the new property value to the device's collection.
-                    await _deviceCategoryPropertyRepository.CreateAsync(newDeviceCategoryProperty);
+                        var result = await _deviceCategoryPropertyRepository.CreateAsync(new DeviceCategoryProperty
+                        {
+                            PropertyId = propertyDto.PropertyId,
+                            DeviceCategoryId = deviceCategory.Id
+                        });
+                        if (result != "success") { return BadRequest<GetDeviceCategoryResponse>(""); }
+                    }
+                }
+                else if(!propertyDto.IsSelected && alreadyExists)
+                {
+                    
+                 
+                    var deleteResult = await _deviceCategoryPropertyRepository.DeleteRelationAsync(request.Id, propertyDto.PropertyId);
+                    if (deleteResult != "success") { return BadRequest<GetDeviceCategoryResponse>(""); }
                 }
             }
-            var result = await _deviceCategoryService.UpdateDeviceCategoryAsync(existingDeviceCategory);
-            if (result == null) { return BadRequest<GetDeviceCategoryResponse>(""); }
-            else {
-                var resultDto = _mapper.Map<GetDeviceCategoryResponse>(result);
-                return Success<GetDeviceCategoryResponse>(resultDto); 
-            }
+            var deviceCategoryAfter = await _deviceCategoryService.GetDeviceCategoryByIdAsync(request.Id);
+            var MappedResult = _mapper.Map<GetDeviceCategoryResponse>(deviceCategoryAfter);
+            return Success<GetDeviceCategoryResponse>(MappedResult);
 
         }
         public async Task<Response<string>> Handle(DeleteDeviceCategoryCommand request, CancellationToken cancellationToken)

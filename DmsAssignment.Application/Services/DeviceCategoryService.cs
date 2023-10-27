@@ -2,6 +2,7 @@
 using DmsAssignment.Application.IServices;
 using DmsAssignment.Infrastructure.Repositories.DeviceCategoryRepositories;
 using System.Linq.Expressions;
+using System;
 
 namespace DmsAssignment.Application.Services
 {
@@ -33,9 +34,9 @@ namespace DmsAssignment.Application.Services
         public async Task<DeviceCategory> GetDeviceCategoryByIdAsync(int id)
         {
             //var includes = new Expression<Func<DeviceCategory, object>>[] {
-            //    deviceCat => deviceCat.DeviceCategoryProperties
+            //    devicecat => devicecat.DeviceCategoryProperties
             //};
-            return await _deviceCategoryRepository.GetDeviceCategoryPropertiesByIdAsync(id);
+            return await _deviceCategoryRepository.GetDeviceCategoryRelationsById(id);
         }
 
         public async Task<DeviceCategory> UpdateDeviceCategoryAsync(DeviceCategory deviceCategory)

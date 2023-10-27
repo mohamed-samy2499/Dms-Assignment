@@ -15,12 +15,11 @@ namespace DmsAssignment.Infrastructure.Repositories.DeviceCategoryRepositories
             _deviceCategory = _appDbContext.Set<DeviceCategory>();
         }
         #endregion
-        public async Task<DeviceCategory> GetDeviceCategoryPropertiesByIdAsync(int deviceCategoryId)
+        public async Task<DeviceCategory> GetDeviceCategoryRelationsById(int Id)
         {
-            return await _deviceCategory
-                .Include(dc => dc.DeviceCategoryProperties)
-                .ThenInclude(dcp => dcp.Property) // Include the Property entity
-                .FirstOrDefaultAsync(dc => dc.Id == deviceCategoryId);
+            var deviceCategory = await _deviceCategory.Where(de => de.Id == Id).Include(d => d.Devices).Include(dp => dp.DeviceCategoryProperties)
+                            .ThenInclude(dpv => dpv.Property).FirstOrDefaultAsync();
+            return deviceCategory;
         }
     }
 }

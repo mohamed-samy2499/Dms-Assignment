@@ -6,6 +6,6 @@ namespace DmsAssignment.Infrastructure.Repositories.DeviceCategoryRepositories
 {
     public interface IDeviceCategoryRepository : IGenericRepository<DeviceCategory>
     {
-        Task<DeviceCategory> GetDeviceCategoryPropertiesByIdAsync(int deviceCategoryId);
+        Task<DeviceCategory> GetDeviceCategoryRelationsById(int Id);
     }
 }

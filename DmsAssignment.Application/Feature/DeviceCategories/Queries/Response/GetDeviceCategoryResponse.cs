@@ -7,6 +7,7 @@ namespace DmsAssignment.Application.Feature.DeviceCategories.Queries.Response
         public string Name { get; set; } = null!;
 
         // ---------- relations -----------
+        public List<DeviceCategoryDeviceDto> DevicesNames { get; set; } = null!;
         public List<DeviceCategoryPropertyDto> Properties { get; set; } = null!;
     }
 }

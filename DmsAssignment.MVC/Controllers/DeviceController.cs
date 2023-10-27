@@ -8,6 +8,7 @@ using DmsAssignment.MVC.Models;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using System.Diagnostics;
 
 namespace DmsAssignment.MVC.Controllers
@@ -35,14 +36,22 @@ namespace DmsAssignment.MVC.Controllers
         #endregion
 
         #region Details Action
-        public async Task<IActionResult> Details(int id)
+        public async Task<IActionResult> Details(int id, string ViewName = "Details")
         {
-            var getDeviceByIdQuery = new GetDeviceByIdQuery()
+            try
             {
-                Id = id
-            };
-            var devices = await _mediator.Send(getDeviceByIdQuery);
-            return View(devices.Data);
+
+                var getDeviceByIdQuery = new GetDeviceByIdQuery()
+                {
+                    Id = id
+                };
+                var devices = await _mediator.Send(getDeviceByIdQuery);
+                return View(ViewName , devices.Data);
+            }
+            catch (Exception ex)
+            {
+                return RedirectToAction(nameof(Index));
+            }
         }
         #endregion
 

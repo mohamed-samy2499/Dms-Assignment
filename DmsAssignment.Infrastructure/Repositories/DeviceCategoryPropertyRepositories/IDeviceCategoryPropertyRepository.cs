@@ -6,5 +6,8 @@ namespace DmsAssignment.Infrastructure.Repositories.DeviceCategoryPropertyReposi
 {
     public interface IDeviceCategoryPropertyRepository : IGenericRepository<DeviceCategoryProperty>
     {
+        Task<DeviceCategoryProperty> FindByCompositeKey(int deviceCategoryId, int propertyId);
+        Task<string> DeleteRelationAsync(int deviceCategoryId, int propertyId);
+
     }
 }

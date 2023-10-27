@@ -1,0 +1,33 @@
+﻿@model AddDeviceCategoryCommand
+
+@{
+    ViewData["Title"] = "Add Device Category";
+ 
+    var AvailableProperties = ViewBag.AvailableProperties;
+
+}
+
+<h1>Add Device Category</h1>
+
+<form asp-action="Create" asp-controller="DeviceCategory" enctype="multipart/form-data" class="container">
+    <div class="row">
+        <div class="form-group">
+            <label asp-for="Name" class="form-control-label"></label>
+            <input asp-for="Name" class="form-control  " />
+        </div>
+
+        
+    </div>
+        <div class="row">
+
+            <button type="submit" class="btn btn-primary">Add Device Category</button>
+            <a class="btn btn-light" asp-action="Index" asp-controller="DeviceCategory">Back To Device Categories</a>
+        </div>
+        <br />
+        <br />
+
+</form>
+@section Scripts
+{
+    <partial name= "_ValidationScriptsPartial"/>
+}

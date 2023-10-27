@@ -20,6 +20,11 @@ namespace DmsAssignment.Application.Mapping.DeviceCategories
 
             CreateMap<DeviceCategory, GetDeviceCategoryListResponse>();
             CreateMap<DeviceCategory, GetDeviceCategoryResponse>()
+                .ForMember(dest => dest.DevicesNames , opt => opt.MapFrom(src => src.Devices.Select(d => new DeviceCategoryDeviceDto
+                {
+                    Id = d.Id,
+                    Name = d.Name
+                })))
                  .ForMember(dest => dest.Properties, opt => opt.MapFrom(src => src.DeviceCategoryProperties.Select(dcp => new DeviceCategoryPropertyDto
                  {
                      PropertyId = dcp.PropertyId,
@@ -27,6 +32,10 @@ namespace DmsAssignment.Application.Mapping.DeviceCategories
                  })));
             CreateMap<AddDeviceCategoryCommand, DeviceCategory>();
             CreateMap<UpdateDeviceCategoryCommand, DeviceCategory>();
+            CreateMap<UpdateDeviceCategoryCommand, GetDeviceCategoryResponse>();
+
+            CreateMap<EditDeviceCategoryPropertiesCommand, DeviceCategory>()
+                .ForMember(dest => dest.Id , opt => opt.MapFrom(src => src.DeviceCategoryId));
 
         }
     }

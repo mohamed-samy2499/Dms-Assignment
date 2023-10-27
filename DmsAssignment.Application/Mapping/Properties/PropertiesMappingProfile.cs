@@ -14,10 +14,10 @@ namespace DmsAssignment.Application.Mapping.Properties
     {
         public PropertiesMappingProfile() {
             //mapping the Device to the Query Models Response
-            CreateMap<Device, GetPropertyListResponse>();
-            CreateMap<Device, GetPropertyResponse>();
-            CreateMap<AddPropertyCommand, Device>();
-            CreateMap<UpdatePropertyCommand, Device>();
+            CreateMap<Property, GetPropertyListResponse>();
+            CreateMap<Property, GetPropertyResponse>();
+            CreateMap<AddPropertyCommand, Property>();
+            CreateMap<UpdatePropertyCommand, Property>();
 
         }
     }

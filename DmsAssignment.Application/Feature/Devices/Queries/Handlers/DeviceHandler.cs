@@ -49,6 +49,7 @@ namespace DmsAssignment.Application.Feature.Devices.Queries.Handlers
             }
             else
             {
+
                 var entityMapped = _mapper.Map<GetDeviceResponse>(entity);
 
 

@@ -1,0 +1,72 @@
+﻿@model UpdateDeviceCommand
+@{
+    ViewData["Title"] = "Details";
+    var DeviceCategoryName = ViewData["CatName"];
+    List<string> PropertyNames = (List<string>)ViewBag.PropertyNames;
+}
+
+<h1>Device Details</h1>
+<br />
+<br />
+<form class="container" asp-action="Edit">
+    <div class="row">
+        <div class=" col-md-6 text-center">
+            <label class="form-control-label">Category </label>
+            <input value="DeviceCategoryName" class="form-control text-center" readonly />
+        </div>
+        <div class=" col-md-6 text-center">
+            <label class="form-control-label">Name</label>
+            <input asp-for="Name" class="form-control text-center" />
+        </div>
+        <div class=" col-md-6 text-center">
+            <label class="form-control-label">Serial No </label>
+            <input asp-for="SerialNo" class="form-control text-center"  />
+        </div>
+        <div class=" col-md-6 text-center">
+            <label class="form-control-label">Acquisition Date </label>
+            <input asp-for="AcquisitionDate" class="form-control text-center"  />
+        </div>
+        <div class=" col-md-6 text-center">
+            <label class="form-control-label">Memo </label>
+            <input asp-for="Memo" class="form-control text-center"  />
+        </div>
+
+
+    </div>
+    @if (Model.Properties != null && Model.Properties.Count() > 0)
+    {
+        <h3>Device Properties</h3>
+        <br />
+        <div class="row">
+            @{int index = 0;}
+            @foreach(var property in Model.Properties)
+            {
+                <div class=" col-md-6 text-center">
+                    <label class="form-control-label">@PropertyNames[index] </label>
+                    <input hidden asp-for="@Model.Properties[index].PropertyId" value="@property.PropertyId" />
+                    <input asp-for="@Model.Properties[index].Value" class="form-control text-center" />
+                </div>
+                index++;
+            }
+        </div>
+        <br />
+
+    }
+    else
+    {
+        <div class="alert alert-warning">
+            <h3>No Data Found!</h3>
+        </div>
+    }
+    <br />
+    <br />
+    <br />
+    <br />
+
+    <div>
+        <input type="submit" class="btn btn-primary" value="Update" />
+        <a class="btn btn-light" asp-action="Index" asp-controller="Device">Back To Devices</a>
+    </div>
+</form>
+
+

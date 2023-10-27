@@ -1,13 +1,14 @@
 ﻿@model GetDeviceResponse
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = "Delete";
 }
 
 <h1>Device Details</h1>
 <br />
 <br />
-<form class="container">
+<form class="container" asp-action="Delete">
     <div class="row">
+        <input hidden asp-for="@Model.Id"/>
         <div class=" col-md-6 text-center">
             <label class="form-control-label">Name</label>
             <input asp-for="Name" class="form-control text-center" readonly />
@@ -30,7 +31,7 @@
         </div>
 
     </div>
-    @if (@Model.PropertiesWithValues != null && @Model.PropertiesWithValues.Count() > 0)
+    @if (@Model.PropertiesWithValues != null)
     {
         <h3>Device Properties</h3>
         <br />
@@ -59,7 +60,7 @@
     <br />
 
     <div>
-        @*<a class="btn btn-success" asp-action="Edit" asp-controller="Invoice" asp-route-id="@Model.Id">Edit</a>*@
+        <input type="submit" class="btn btn-danger" value="Delete" />
         <a class="btn btn-light" asp-action="Index" asp-controller="Device">Back To Devices</a>
     </div>
 </form>

@@ -16,7 +16,7 @@ namespace DmsAssignment.Infrastructure.Repositories.DeviceRepositories
         #endregion
         public async Task<Device> GetDeviceRelationsById(int Id)
         {
-            var device =   _device.Include(d => d.DeviceCategory).Include(dp => dp.DevicePropertyValues)
+            var device =   _device.Where(de => de.Id == Id).Include(d => d.DeviceCategory).Include(dp => dp.DevicePropertyValues)
                             .ThenInclude(dpv => dpv.Property).FirstOrDefault();
             return device;
         }

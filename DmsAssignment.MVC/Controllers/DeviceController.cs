@@ -1,7 +1,9 @@
-﻿using DmsAssignment.Application.Feature.DeviceCategories.Queries.Models;
+﻿using AutoMapper;
+using DmsAssignment.Application.Feature.DeviceCategories.Queries.Models;
 using DmsAssignment.Application.Feature.DeviceCategories.Queries.Response;
 using DmsAssignment.Application.Feature.Devices.Commands.Models;
 using DmsAssignment.Application.Feature.Devices.Queries.Models;
+using DmsAssignment.Domain.Entities;
 using DmsAssignment.MVC.Models;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -14,10 +16,12 @@ namespace DmsAssignment.MVC.Controllers
     {
         private readonly ILogger<HomeController> _logger;
         private readonly IMediator _mediator;
-        public DeviceController(ILogger<HomeController> logger, IMediator mediator)
+        private IMapper _mapper;
+        public DeviceController(ILogger<HomeController> logger, IMediator mediator, IMapper mapper)
         {
             _logger = logger;
             _mediator = mediator;
+            _mapper = mapper;
         }
 
         public async Task<IActionResult> Index()
@@ -25,11 +29,11 @@ namespace DmsAssignment.MVC.Controllers
             var devices = await _mediator.Send(new GetDeviceListQuery());
             return View(devices.Data);
         }
-        public async Task<IActionResult> Details(int Id)
+        public async Task<IActionResult> Details(int id)
         {
             var getDeviceByIdQuery = new GetDeviceByIdQuery()
             {
-                Id = Id
+                Id = id
             };
             var devices = await _mediator.Send(getDeviceByIdQuery);
             return View(devices.Data);
@@ -69,11 +73,86 @@ namespace DmsAssignment.MVC.Controllers
             var result  = await _mediator.Send(command);
             return RedirectToAction(nameof(Index));
         }
+        [HttpGet]
+        public async Task<IActionResult> Edit(int id)
+        {
+            if (id > 0)
+            {
+                var getDeviceByIdQuery = new GetDeviceByIdQuery()
+                {
+                    Id = id
+                };
+                var device = await _mediator.Send(getDeviceByIdQuery);
+                var getDeviceResponse = device.Data;
+                var updateDeviceCommand = _mapper.Map<UpdateDeviceCommand>(getDeviceResponse);
+
+                List<DevicePropertyCommand> properties = new List<DevicePropertyCommand>();
+                int index = 0;
+                foreach (var index1 in getDeviceResponse.PropertiesIds)
+                {
+                    KeyValuePair<string, string> item = getDeviceResponse.PropertiesWithValues.ElementAt(index);
+                    properties.Add(new DevicePropertyCommand
+                    {
+                        PropertyId = index1,
+                        Value = item.Value
+                    });
+                    index++;
+                }
+                updateDeviceCommand.Properties = properties;
+                ViewData["CatName"] = getDeviceResponse.DeviceCategoryName;
+                List<string> PropertyNames = new List<string>();
+                foreach(var item in getDeviceResponse.PropertiesWithValues)
+                {
+                    PropertyNames.Add(item.Key);
+                } 
+                ViewBag.PropertyNames = PropertyNames;  
+                return View(updateDeviceCommand);
+            }
+            return RedirectToAction(nameof(Index));
+        }
+        [HttpPost]
+
+        public async Task<IActionResult> Edit(UpdateDeviceCommand command)
+        {
+            var result  = await _mediator.Send(command);
+            if (result.Succeeded)
+                return RedirectToAction(nameof(Index));
+            return View(result);
+        }
         public IActionResult Privacy()
         {
             return View();
         }
-
+        #region Delete
+        public async Task<IActionResult> Delete(int id)
+        {
+            var getDeviceByIdQuery = new GetDeviceByIdQuery()
+            {
+                Id = id
+            };
+            var devices = await _mediator.Send(getDeviceByIdQuery);
+            return View(devices.Data);
+        }
+        [HttpPost, ActionName("Delete")]
+        public async Task<IActionResult> DeleteConfirmed(int id, UpdateDeviceCommand deviceCommand)
+        {
+            if (id != deviceCommand.Id)
+                return NotFound();
+            try
+            {
+                var deleteDeviceCommand = new DeleteDeviceCommand()
+                {
+                    Id = id
+                };
+                var result = await _mediator.Send(deleteDeviceCommand);
+                return RedirectToAction(nameof(Index));
+            }
+            catch
+            {
+                return NotFound();
+            }
+        }
+        #endregion
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {

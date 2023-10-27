@@ -16,7 +16,6 @@ namespace DmsAssignment.Application.Feature.Devices.Commands.Models
 
 
         // ---------- relations -----------
-        public int DeviceCategoryId { get; set; }
         public List<DevicePropertyCommand> Properties { get; set; } = null!;
     }
 }

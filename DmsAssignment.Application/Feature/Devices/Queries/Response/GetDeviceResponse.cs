@@ -13,5 +13,6 @@
         // ---------- relations -----------
         public string DeviceCategoryName { get; set; } = null!;
         public Dictionary<string, string> PropertiesWithValues { get; set; } = null!;
+        public List<int> PropertiesIds { get; set; }
     }
 }

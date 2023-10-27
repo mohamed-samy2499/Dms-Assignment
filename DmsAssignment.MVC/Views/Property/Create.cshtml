@@ -1,0 +1,32 @@
+﻿@model AddPropertyCommand
+
+@{
+    ViewData["Title"] = "Add Property";
+
+}
+
+<h1>Add Device</h1>
+
+<form asp-action="Create" asp-controller="Property" enctype="multipart/form-data" class="container">
+    <div class="row">
+        <div class="form-group">
+            <label asp-for="Name" class="form-control-label"></label>
+            <input asp-for="Name" class="form-control  " />
+        </div>
+
+
+        
+    </div>
+        <div class="row">
+
+            <button type="submit" class="btn btn-primary">Add Property</button>
+            <a class="btn btn-light" asp-action="Index" asp-controller="Property">Back To Properties</a>
+        </div>
+        <br />
+        <br />
+
+</form>
+@section Scripts
+{
+    <partial name= "_ValidationScriptsPartial"/>
+}

@@ -18,6 +18,8 @@ namespace DmsAssignment.Application.Mapping.Properties
             CreateMap<Property, GetPropertyResponse>();
             CreateMap<AddPropertyCommand, Property>();
             CreateMap<UpdatePropertyCommand, Property>();
+            CreateMap<GetPropertyResponse, UpdatePropertyCommand>();
+
 
         }
     }

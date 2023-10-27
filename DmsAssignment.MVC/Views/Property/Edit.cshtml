@@ -1,0 +1,29 @@
+﻿@model UpdatePropertyCommand
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1>Property Details</h1>
+<br />
+<br />
+<form class="container" asp-action="Edit">
+    <div class="row">
+        <div class=" col-md-6 text-center">
+            <label class="form-control-label">Name</label>
+            <input asp-for="Name" class="form-control text-center" />
+        </div>
+
+
+    </div>
+    <br />
+    <br />
+    <br />
+    <br />
+
+    <div>
+        <input type="submit" class="btn btn-primary" value="Update" />
+        <a class="btn btn-light" asp-action="Index" asp-controller="Property">Back To Properties</a>
+    </div>
+</form>
+
+

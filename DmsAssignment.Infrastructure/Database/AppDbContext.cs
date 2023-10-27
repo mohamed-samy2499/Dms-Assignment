@@ -136,6 +136,24 @@ namespace DmsAssignment.Infrastructure.Database
 
             //DevicePropertyValue Table the Many to Many relation
             //between the Device and the Property tables
+            builder.Entity<Device>(builder =>
+            {
+                // Other configurations for Device entity
+
+                builder
+                    .HasMany(d => d.DevicePropertyValues)
+                    .WithOne(dpv => dpv.Device)
+                    .HasForeignKey(dpv => dpv.DeviceId);
+            });
+            builder.Entity<Property>(builder =>
+            {
+                // Other configurations for Property entity
+
+                builder
+                    .HasMany(p => p.DevicePropertyValues)
+                    .WithOne(dpv => dpv.Property)
+                    .HasForeignKey(dpv => dpv.PropertyId);
+            });
             builder.Entity<DevicePropertyValue>(builder =>
             {
                 builder

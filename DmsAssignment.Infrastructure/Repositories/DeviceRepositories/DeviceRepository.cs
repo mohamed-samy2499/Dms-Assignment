@@ -14,5 +14,11 @@ namespace DmsAssignment.Infrastructure.Repositories.DeviceRepositories
             _device = _appDbContext.Set<Device>();
         }
         #endregion
+        public async Task<Device> GetDeviceRelationsById(int Id)
+        {
+            var device =   _device.Include(d => d.DeviceCategory).Include(dp => dp.DevicePropertyValues)
+                            .ThenInclude(dpv => dpv.Property).FirstOrDefault();
+            return device;
+        }
     }
 }

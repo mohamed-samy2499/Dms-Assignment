@@ -36,10 +36,11 @@ namespace DmsAssignment.Application.Services
 
         public async Task<Device> GetDeviceByIdAsync(int id)
         {
-            var includes = new Expression<Func<Device, object>>[] {
-                device => device.DeviceCategory , device => device.DevicePropertyValues
-            };
-            return await _deviceRepository.GetByIdAsync(id,includes);
+            //var includes = new Expression<Func<Device, object>>[] {
+            //    device => device.DeviceCategory , device => device.DevicePropertyValues
+            //    ,device => device.DevicePropertyValues.Select(dpv => dpv.Property)
+            //};
+            return await _deviceRepository.GetDeviceRelationsById(id);
         }
 
         public async Task<Device> UpdateDeviceAsync(Device device)

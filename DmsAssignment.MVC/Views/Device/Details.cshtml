@@ -1,0 +1,67 @@
+﻿@model GetDeviceResponse
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Device Details</h1>
+<br />
+<br />
+<form class="container">
+    <div class="row">
+        <div class=" col-md-6 text-center">
+            <label class="form-control-label">Name</label>
+            <input asp-for="Name" class="form-control text-center" readonly />
+        </div>
+        <div class=" col-md-6 text-center">
+            <label class="form-control-label">Serial No </label>
+            <input asp-for="SerialNo" class="form-control text-center" readonly />
+        </div>
+        <div class=" col-md-6 text-center">
+            <label class="form-control-label">Acquisition Date </label>
+            <input asp-for="AcquisitionDate" class="form-control text-center" readonly />
+        </div>
+        <div class=" col-md-6 text-center">
+            <label class="form-control-label">Memo </label>
+            <input asp-for="Memo" class="form-control text-center" readonly />
+        </div>
+        <div class=" col-md-6 text-center">
+            <label class="form-control-label">Category </label>
+            <input asp-for="DeviceCategoryName" class="form-control text-center" readonly />
+        </div>
+
+    </div>
+    @if (Model.PropertiesWithValues != null && Model.PropertiesWithValues.Count() > 0)
+    {
+        <h3>Device Properties</h3>
+        <br />
+        <div class="row">
+
+            @foreach(var property in Model.PropertiesWithValues)
+            {
+                <div class=" col-md-6 text-center">
+                    <label class="form-control-label">@property.Key </label>
+                    <input asp-for="@property.Value" class="form-control text-center" readonly />
+                </div>
+            }
+        </div>
+        <br />
+
+    }
+    else
+    {
+        <div class="alert alert-warning">
+            <h3>No Data Found!</h3>
+        </div>
+    }
+    <br />
+    <br />
+    <br />
+    <br />
+
+    <div>
+        @*<a class="btn btn-success" asp-action="Edit" asp-controller="Invoice" asp-route-id="@Model.Id">Edit</a>*@
+        <a class="btn btn-light" asp-action="Index" asp-controller="Device">Back To Devices</a>
+    </div>
+</form>
+
+

@@ -1,0 +1,30 @@
+﻿@model List<GetDeviceCategoryListResponse>
+
+<form id="selectCategoryForm" asp-controller="Device" asp-action="Create" method="get" class="container">
+    <div class="row">
+
+        @* <label for="deviceCategory">Select a Device Category:</label> *@
+        <select name="DeviceCategoryId" id="deviceCategory">
+            <option value="">Select a category</option>
+            @foreach (var category in Model)
+            {
+                <option value="@category.Id">@category.Name</option>
+            }
+        </select>
+    </div>
+    <br />
+    <br />
+    <div class="row">
+
+    <button type="button" id="nextButton" class="btn btn-primary">Next</button>
+
+    <a class="btn btn-light" asp-action="Index" asp-controller="Device">Back To Devices</a>
+    </div>
+</form>
+
+<script>
+    // JavaScript to submit the form when the "Next" button is clicked
+    document.getElementById("nextButton").addEventListener("click", function () {
+        document.getElementById("selectCategoryForm").submit();
+    });
+</script>

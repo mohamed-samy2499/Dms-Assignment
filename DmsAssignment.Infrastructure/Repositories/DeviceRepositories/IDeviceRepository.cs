@@ -6,5 +6,6 @@ namespace DmsAssignment.Infrastructure.Repositories.DeviceRepositories
 {
     public interface IDeviceRepository : IGenericRepository<Device>
     {
+        Task<Device> GetDeviceRelationsById(int Id);
     }
 }

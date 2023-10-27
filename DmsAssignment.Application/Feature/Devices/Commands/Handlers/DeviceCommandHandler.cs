@@ -30,6 +30,12 @@ namespace DmsAssignment.Application.Feature.Devices.Commands.Handlers
         public async Task<Response<string>> Handle(AddDeviceCommand request, CancellationToken cancellationToken)
         {
             var device = _mapper.Map<Device>(request);
+            var result = await _deviceService.AddDeviceAsync(device);
+
+            if (result != "success")
+            {
+                return BadRequest<string>("");
+            }
             // Handle properties and values here
             foreach (var propertyCommand in request.Properties)
             {
@@ -42,8 +48,8 @@ namespace DmsAssignment.Application.Feature.Devices.Commands.Handlers
                 await _devicePropertyValueRepository.CreateAsync(devicePropertyValue);
             }
 
-            var result = await _deviceService.AddDeviceAsync(device);
-            if (result != "success") { return BadRequest<string>(""); }
+            var result1 = await _deviceService.UpdateDeviceAsync(device);
+            if (result1 == null) { return BadRequest<string>(""); }
             else { return Created(""); }
 
         }
